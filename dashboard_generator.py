@@ -34,20 +34,7 @@ print("TOTAL MONTHLY SALES: " + str(total_sales))
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
-#for row in df:
-#    product.append({})
-# print(df["product"])
-grouped = df.groupby(["product", "sales price"]).sum()
-#total_rows = df.shape[0]
-#print(len(df))
-
-
-
-#for row in _____________: # how to loop through each row in a dataframe
-#    products.append({}) # how to convert each row to a dictionary
-# APPROACH B
-# products = df.to_dict("records")
-
+grouped = df.groupby(["product"]).agg({"sales price":sum})
 
 print(str(grouped))
 
