@@ -23,6 +23,10 @@ The Pandas package will also need to be installed:
 
     pip install pandas
 
+The plotly package will be used to generate the bar chart:
+
+    pip install plotly
+
 To test the virtual environment, run the above given script by typing within GitBash:
 python exec_dash.py
  
