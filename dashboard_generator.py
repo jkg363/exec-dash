@@ -34,25 +34,15 @@ print("TOTAL MONTHLY SALES: " + str(total_sales))
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
-grouped = df.groupby(["product"]).agg({"sales price":sum})
-
+grouped = df.groupby(["product"]).agg({"sales price":sum}).sort_values(["sales price"],ascending=False)
 print(str(grouped))
-
-# import pandas
-# csv_filepath = "data\sales-201803.csv"
-# df = pandas.read_csv(csv_filepath)
-# sales = df.to_dict("records")
-# total_sales = 0
-# for x in sales:
-#     total_sales = total_sales + x["sales price"]
-# df.groupby("product")['tag'].apply(lambda tags: ','.join(tags))
-# grouped = df.groupby(['product']).sum()
-# print(str(grouped))
 
 # print("TOP SELLING PRODUCTS:")
 # print("  1) Button-Down Shirt: $6,960.35")
 # print("  2) Super Soft Hoodie: $1,875.00")
 # print("  3) etc.")
+
+# SOURCE: https://stackoverflow.com/questions/27842613/pandas-groupby-sort-within-groups
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
