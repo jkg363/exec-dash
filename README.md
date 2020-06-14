@@ -19,6 +19,10 @@ An Anaconda virtual environment will need to be set up.  Within GitBash type:
 
    conda activate dashboard-env
 
+The Pandas package will also need to be installed:
+
+    pip install pandas
+
 To test the virtual environment, run the above given script by typing within GitBash:
 python exec_dash.py
  
@@ -32,6 +36,8 @@ Python
 Anaconda
 
 Visual Studio Code
+
+Pandas
 
 # Versioning:
 GitHub Desktop used for versioning.
