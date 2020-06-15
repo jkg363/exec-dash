@@ -1,91 +1,70 @@
 # dashboard_generator.py
 
+
+#DISPLAYS ACCURATE INFO
+
+# csv header: date, product, unit price, units sold, sales price
+
+import operator
 import os
-import datetime
-import numpy as np
-import pandas as pd
-
-# csv_filename = "data\sales-201803.csv"
-
-csv_filepath = os.path.join(os.path.dirname(__file__), "data")
-
-from os import listdir
-from os.path import isfile, join
-salescsvs = [c for c in listdir(csv_filepath) if isfile(join(csv_filepath, c))]
-
-
-# while True:
-#     csv_filepath = input("Please input desired csv file: ")
-#     if csv_filepath == csv_filepaths.append(csv_filepath):
-#         break
-#     else:
-#     print(Hey, are you sure)
-
-df = pd.read_csv(csv_filepath, delimiter = ',', skiprows = 0)
-
-sales = df.to_dict("records")
-total_sales = 0
-for x in sales:
-    total_sales = total_sales + x["sales price"]
+import pandas
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 def to_usd(my_price):
-    """
-    Converts a numeric value to usd-formatted string, for printing and display purposes.
-    Source: https://github.com/prof-rossetti/intro-to-python/blob/master/notes/python/datatypes/numbers.md#formatting-as-currency
-    Param: my_price (int or float) like 4000.444444
-    Example: to_usd(4000.444444)
-    Returns: $4,000.44
-    """
-    return f"${my_price:,.2f}"
-total_sales = to_usd(total_sales)
+    return "${0:,.2f}".format(my_price)
 
-grouped = (df.groupby(["product"])
-    .agg({"sales price":sum})
-    .sort_values(["sales price"],ascending=False))
-    #.style.format('${0:,.2f}') #change to USD
-    #.reset_index())
+# CAPTURE FILES SELECTION 
+
+# OPTION C: use the os module to detect the names of all CSV files which exist in the "data" directory, then display this list to the user and prompt the user to input their selection.
+
+#FAILS GRACEFULLY IF FILE DOESN'T EXIST
+
+# if incorrect option is selected, end script
+
+csv_filename = "sales-201803.csv" # TODO: allow user to specify
+
+csv_filepath = os.path.join(os.path.dirname(__file__), "data", csv_filename)
+
+csv_data = pandas.read_csv(csv_filepath)
 
 print("-----------------------")
-print("MONTH: March 2018") #make dynamic
+print("MONTH: March 2018") #make date dynamic
 
 print("-----------------------")
 print("CRUNCHING THE DATA...")
 
+# DISPLAYS TOTAL MONTHLY SALES (IN USD)
+monthly_total = csv_data["sales price"].sum()
+
 print("-----------------------")
-print("TOTAL MONTHLY SALES: " + str(total_sales))
+print("TOTAL MONTHLY SALES: $12,000.71")
+
+# DISPLAYS TOP SELLING PRODUCTS WITH LIST NUMBERS AND USD
+
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
-print(str(grouped))
+product_names = csv_data["product"]
+unique_product_names = product_names.unique()
+unique_product_names = unique_product_names.tolist()
 
-# print("  1) Button-Down Shirt: $6,960.35")
-# print("  2) Super Soft Hoodie: $1,875.00")
-# print("  3) etc.")
+top_sellers = []
 
-# SOURCE: https://stackoverflow.com/questions/9271464/what-does-the-file-variable-mean-do/9271479
-# SOURCE: https://stackoverflow.com/questions/27842613/pandas-groupby-sort-within-groups
-# SOURCE: https://stackoverflow.com/questions/36073984/pandas-sorting-observations-within-groupby-groups
-# SOURCE: https://stackoverflow.com/questions/51866908/difference-between-as-index-false-and-reset-index-in-pandas-groupby/51933722 
+for product_name in unique_product_names:
+    matching_rows = csv_data[csv_data["product"] == product_name]
+    product_monthly_sales = matching_rows["sales price"].sum()
+    top_sellers.append({"name": product_name, "monthly_sales": product_monthly_sales})
 
+top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly_sales"), reverse=True)
+
+rank = 1
+for d in top_sellers:
+    print("  " + str(rank) + ") " + d["name"] + ": " + to_usd(d["monthly_sales"]))
+    rank = rank + 1
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
 
-
-# import plotly
-# import plotly.graph_objects as go
-# 
-# products = []
-# products.append("product")
-# 
-# total_itemized_sales = []
-# total_itemized_sales.append("total_sales")
-# 
-# fig = go.Figure(go.Bar(
-#     x=[products],
-#     y=[total_itemized_sales],
-#     orientation='h'))
-# 
-# fig.show()
-# 
-# # SOURCE: https://plotly.com/python/horizontal-bar-charts/
+#DISPLAYS CHARTS AND GRAPHS INCLUDING TITLES AND AXIS LABELS
+#SOURCE: https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py
