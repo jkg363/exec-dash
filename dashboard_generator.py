@@ -34,13 +34,11 @@ print("MONTH: March 2018") #make date dynamic
 print("-----------------------")
 print("CRUNCHING THE DATA...")
 
-# DISPLAYS TOTAL MONTHLY SALES (IN USD)
 monthly_total = csv_data["sales price"].sum()
+monthly_total_usd = to_usd(monthly_total)
 
 print("-----------------------")
-print("TOTAL MONTHLY SALES: $12,000.71")
-
-# DISPLAYS TOP SELLING PRODUCTS WITH LIST NUMBERS AND USD
+print("TOTAL MONTHLY SALES: " + str(monthly_total_usd))
 
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
