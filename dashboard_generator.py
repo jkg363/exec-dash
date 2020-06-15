@@ -2,25 +2,15 @@
 
 #SOURCE: https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py
 
-# csv header: date, product, unit price, units sold, sales price
-
 import operator
 import os
 import pandas
 import datetime
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
+import plotly
+from plotly import graph_objs as go
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
-
-# CAPTURE FILES SELECTION 
-
-#FAILS GRACEFULLY IF FILE DOESN'T EXIST
-
-# if incorrect option is selected, end script
-
-# csv_filename = "sales-201803.csv" # TODO: allow user to specify
 
 # SOURCE: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
 
@@ -91,3 +81,17 @@ print("VISUALIZING THE DATA...")
 
 #DISPLAYS CHARTS AND GRAPHS INCLUDING TITLES AND AXIS LABELS
 
+products_monthly_sales = []
+products_monthly_sales.append(product_monthly_sales)
+
+#top_sellers_c = []
+#top_sellers_c.append(top_sellers)
+
+fig = go.Figure(go.Bar(
+    x=[products_monthly_sales],
+    y=[unique_product_names],
+    orientation='h'))
+
+fig.show()
+
+# SOURCE: https://plotly.com/python/horizontal-bar-charts/
