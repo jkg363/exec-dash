@@ -6,8 +6,9 @@ import operator
 import os
 import pandas
 import datetime
-import plotly
-from plotly import graph_objs as go
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import numpy as np
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
@@ -79,19 +80,30 @@ for d in top_sellers:
 print("-----------------------")
 print("VISUALIZING THE DATA...")
 
-#DISPLAYS CHARTS AND GRAPHS INCLUDING TITLES AND AXIS LABELS
+# SOURCE: https://pythonspot.com/matplotlib-bar-chart/
+# SOURCE: https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py
 
-products_monthly_sales = []
-products_monthly_sales.append(product_monthly_sales)
+chart_products = []
+chart_sales = []
 
-#top_sellers_c = []
-#top_sellers_c.append(top_sellers)
+for p in top_sellers:
+    chart_products.append(p["name"])
+    chart_sales.append(p["monthly_sales"])
 
-fig = go.Figure(go.Bar(
-    x=[products_monthly_sales],
-    y=[unique_product_names],
-    orientation='h'))
+y_pos = np.arange(len(chart_products))
 
-fig.show()
+chart_products.reverse()
+chart_sales.reverse()
 
-# SOURCE: https://plotly.com/python/horizontal-bar-charts/
+fig, ax = plt.subplots()
+usd_formatter = ticker.FormatStrFormatter('$%1.0f')
+ax.xaxis.set_major_formatter(usd_formatter)
+
+plt.barh(chart_products, chart_sales)
+plt.title('Top Selling Products (Month_Year)') #FIX MONTH YEAR
+plt.yticks(y_pos, chart_products)
+plt.ylabel('Product')
+plt.xlabel('Monthly Sales (USD)')
+
+plt.tight_layout()
+plt.show()
