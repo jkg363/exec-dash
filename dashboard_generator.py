@@ -1,13 +1,13 @@
 # dashboard_generator.py
 
-
-#DISPLAYS ACCURATE INFO
+#SOURCE: https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py
 
 # csv header: date, product, unit price, units sold, sales price
 
 import operator
 import os
 import pandas
+import datetime
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
@@ -16,21 +16,46 @@ def to_usd(my_price):
 
 # CAPTURE FILES SELECTION 
 
-# OPTION C: use the os module to detect the names of all CSV files which exist in the "data" directory, then display this list to the user and prompt the user to input their selection.
-
 #FAILS GRACEFULLY IF FILE DOESN'T EXIST
 
 # if incorrect option is selected, end script
 
-csv_filename = "sales-201803.csv" # TODO: allow user to specify
+# csv_filename = "sales-201803.csv" # TODO: allow user to specify
 
-csv_filepath = os.path.join(os.path.dirname(__file__), "data", csv_filename)
+# SOURCE: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
 
-csv_data = pandas.read_csv(csv_filepath)
+data_csv_folder = os.path.join(os.path.dirname(__file__), "data")
+
+from os import listdir
+from os.path import isfile, join
+datafiles = [f for f in listdir(data_csv_folder) if isfile(join(data_csv_folder, f))]
+
+# SOURCE: https://stackoverflow.com/questions/12116348/if-statement-to-control-user-input
+
+while True:
+    file_select = input("Please enter desired Monthly Sales file: ")
+    if [m for m in datafiles if m == file_select]:
+         print("MONTHLY SALES DATA")
+         break
+    else:
+         print("Sorry! File does not exist.")
+
+csv_filepath = os.path.join(os.path.dirname(__file__), "data",str(file_select))
+
+csv_data = pandas.read_csv(csv_filepath, delimiter=",")
+
+# SOURCE: https://stackoverflow.com/questions/54053680/datetime-in-python-importing-csv
+
+# csv_data["date"] = pandas.to_datetime(csv_data["date"])
+
+#data = []
+#for row in csv_data["date"]:
+#    date = datetime.datetime.strptime("%Y-%m-%d")
+# df["date"] = pd.to_datetime(df["date"])
+# month_year_title = csv_data["date"]
 
 print("-----------------------")
-print("MONTH: March 2018") #make date dynamic
-
+print("MONTH: " + "FIX THIS") #make date dynamic
 print("-----------------------")
 print("CRUNCHING THE DATA...")
 
@@ -65,4 +90,4 @@ print("-----------------------")
 print("VISUALIZING THE DATA...")
 
 #DISPLAYS CHARTS AND GRAPHS INCLUDING TITLES AND AXIS LABELS
-#SOURCE: https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py
+
