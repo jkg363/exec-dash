@@ -80,30 +80,60 @@ for d in top_sellers:
 print("-----------------------")
 print("VISUALIZING THE DATA...")
 
+#Pie Chart
+# SOURCE: https://matplotlib.org/3.1.1/gallery/pie_and_polar_charts/pie_and_donut_labels.html
+fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+
+products = []
+sales = []
+
+for h in top_sellers:
+    products.append(h["name"])
+    sales.append(h["monthly_sales"])
+
+def func(pct, allvals):
+    absolute = int(pct/100.*np.sum(allvals))
+    return "{:.1f}%".format(pct, absolute)
+
+wedges, texts, autotexts = ax.pie(sales, autopct=lambda pct: func(pct, sales),
+                                  textprops=dict(color="w"))
+
+ax.legend(wedges, products,
+          title="Products",
+          loc="center left",
+          bbox_to_anchor=(1, 0, 0.5, 1))
+
+plt.setp(autotexts, size=8, weight="bold")
+
+ax.set_title("Top Selling Products (Month_Year)", weight="bold")
+
+plt.show()
+
+#Bar Chart
 # SOURCE: https://pythonspot.com/matplotlib-bar-chart/
 # SOURCE: https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py
-
-chart_products = []
-chart_sales = []
+# SOURCE: https://stackoverflow.com/questions/30228069/how-to-display-the-value-of-the-bar-on-each-bar-with-pyplot-barh
+y = []
+x = []
 
 for p in top_sellers:
-    chart_products.append(p["name"])
-    chart_sales.append(p["monthly_sales"])
+    y.append(p["name"])
+    x.append(p["monthly_sales"])
 
-y_pos = np.arange(len(chart_products))
-
-chart_products.reverse()
-chart_sales.reverse()
+y_pos = np.arange(len(y))
 
 fig, ax = plt.subplots()
 usd_formatter = ticker.FormatStrFormatter('$%1.0f')
 ax.xaxis.set_major_formatter(usd_formatter)
-ax.barh(y_pos, chart_sales, color="red")
-ax.set_yticklabels(chart_sales, minor=False)
 
-plt.barh(chart_products, chart_sales)
+for i, v in enumerate(x):
+    ax.text(v + 3, i + .25, str(to_usd(v)), color='black')
+
+ax.invert_yaxis()
+
+plt.barh(y, x)
 plt.title('Top Selling Products (Month_Year)') #FIX MONTH YEAR
-plt.yticks(y_pos, chart_products)
+plt.yticks(y_pos, y)
 plt.ylabel('Product')
 plt.xlabel('Monthly Sales (USD)')
 
