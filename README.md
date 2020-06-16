@@ -23,16 +23,22 @@ The Pandas package will also need to be installed:
 
     pip install pandas
 
-The plotly package will be used to generate the bar chart:
+The matplotlib package will be used to generate the bar chart:
 
-    pip install plotly
+    pip install matplotlib
 
 To test the virtual environment, run the above given script by typing within GitBash:
 python exec_dash.py
  
 # Running the tests:
 
+To run, enter:
 
+    python.dashboard_generator.py
+
+When prompted, entered the desired .csv file that is located within the "data" folder.
+
+Press enter and program will run.
 
 # Built With:
 Python
@@ -42,6 +48,8 @@ Anaconda
 Visual Studio Code
 
 Pandas
+
+Matplotlib
 
 # Versioning:
 GitHub Desktop used for versioning.

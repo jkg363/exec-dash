@@ -98,6 +98,8 @@ chart_sales.reverse()
 fig, ax = plt.subplots()
 usd_formatter = ticker.FormatStrFormatter('$%1.0f')
 ax.xaxis.set_major_formatter(usd_formatter)
+ax.barh(y_pos, chart_sales, color="red")
+ax.set_yticklabels(chart_sales, minor=False)
 
 plt.barh(chart_products, chart_sales)
 plt.title('Top Selling Products (Month_Year)') #FIX MONTH YEAR
