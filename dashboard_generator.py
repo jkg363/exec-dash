@@ -35,18 +35,20 @@ csv_filepath = os.path.join(os.path.dirname(__file__), "data",str(file_select))
 
 csv_data = pandas.read_csv(csv_filepath, delimiter=",")
 
-# SOURCE: https://stackoverflow.com/questions/54053680/datetime-in-python-importing-csv
+# SOURCE: https://stackoverflow.com/questions/31813994/reading-specific-cell-in-csv-using-pandas
+# SOURCE: https://stackoverflow.com/questions/26105804/extract-month-from-date-in-python/26105888
+# SOURCE: https://stackoverflow.com/questions/6557553/get-month-name-from-number 
 
-# csv_data["date"] = pandas.to_datetime(csv_data["date"])
+date_data = csv_data["date"][2]
 
-#data = []
-#for row in csv_data["date"]:
-#    date = datetime.datetime.strptime("%Y-%m-%d")
-# df["date"] = pd.to_datetime(df["date"])
-# month_year_title = csv_data["date"]
+this_date = datetime.datetime.strptime(date_data, "%Y-%m-%d")
+
+month = this_date.month
+month_name = this_date.strftime("%B")
+year = this_date.year
 
 print("-----------------------")
-print("MONTH: " + "FIX THIS") #make date dynamic
+print("MONTH: " + str(month_name) + " " + str(year))
 print("-----------------------")
 print("CRUNCHING THE DATA...")
 
@@ -105,7 +107,7 @@ ax.legend(wedges, products,
 
 plt.setp(autotexts, size=8, weight="bold")
 
-ax.set_title("Top Selling Products (Month_Year)", weight="bold")
+ax.set_title("Top Selling Products " + str(month_name) + " " + str(year), weight="bold")
 
 plt.show()
 
@@ -132,7 +134,7 @@ for i, v in enumerate(x):
 ax.invert_yaxis()
 
 plt.barh(y, x)
-plt.title('Top Selling Products (Month_Year)') #FIX MONTH YEAR
+plt.title('Top Selling Products ' + str(month_name) + " " + str(year))
 plt.yticks(y_pos, y)
 plt.ylabel('Product')
 plt.xlabel('Monthly Sales (USD)')
